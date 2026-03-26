@@ -1,0 +1,109 @@
+/* ============================================================
+   About Dialog
+   ============================================================ */
+
+.about-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: about-backdrop-in 140ms ease;
+}
+
+@keyframes about-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.about-dialog {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30), 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 32px 36px 28px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: about-dialog-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+@keyframes about-dialog-in {
+  from { opacity: 0; transform: scale(0.94) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.about-dialog__logo {
+  margin-bottom: 10px;
+}
+
+.about-dialog__name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 0;
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+}
+
+.about-dialog__version {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.about-dialog__tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 8px 0 4px;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+.about-dialog__links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.about-dialog__link {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--font-sans);
+}
+
+.about-dialog__link:hover {
+  text-decoration: underline;
+}
+
+.about-dialog__link-sep {
+  font-size: 12px;
+  color: var(--border);
+  font-family: var(--font-sans);
+}
+
+.about-dialog__close {
+  margin-top: 20px;
+  padding: 6px 22px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+
+.about-dialog__close:hover {
+  background: var(--border);
+}

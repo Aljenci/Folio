@@ -1,0 +1,65 @@
+/* ============================================================
+   App Shell — top-level flex layout (column: toolbar + body)
+   ============================================================ */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Body below the toolbar: sidebar + document area side by side */
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   TOC Sidebar — transform-based slide animation.
+   top / height account for the toolbar so it doesn't overlap.
+   ============================================================ */
+
+.toc-sidebar {
+  position: fixed;
+  left: 0;
+  top: var(--toolbar-h);
+  height: calc(100vh - var(--toolbar-h));
+  width: 260px;
+  z-index: 10;
+  transform: translateX(0);
+  transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s;
+  visibility: visible;
+}
+
+.toc-sidebar--closed {
+  transform: translateX(-100%);
+  /* Delay visibility removal until the slide-out animation finishes
+     so the element doesn't disappear instantly when closing. */
+  visibility: hidden;
+  transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s 260ms;
+}
+
+/* ============================================================
+   Document area — shifts right when sidebar is open
+   ============================================================ */
+
+.document-area {
+  flex: 1;
+  overflow-y: auto;
+  margin-left: 0;
+  transition: margin-left 260ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Establish a scroll container for ProgressBar and useToc */
+  position: relative;
+  /* Needed for flex children: prevents flex item from expanding beyond parent */
+  min-height: 0;
+}
+
+.document-area--sidebar-open {
+  margin-left: 260px;
+}

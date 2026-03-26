@@ -1,0 +1,26 @@
+/*
+  Dark theme — true dark, OLED-safe.
+
+  #141414 is dark enough that on OLED screens, pixels that should be black
+  turn off entirely, saving battery and improving contrast. It is not pure
+  black (#000) because adjacent text on pure black can create harsh contrast.
+
+  We use a slightly warm white (#E8E8E4) for text rather than pure white,
+  for the same reason we avoid pure white backgrounds in the light theme.
+*/
+[data-theme="dark"] {
+  --bg:              #141414;
+  --surface:         #1C1C1C;
+  --text:            #E8E8E4;
+  --text-muted:      #888880;
+  --text-heading:    #F0F0EC;
+  --border:          #2E2E2E;
+  --accent:          #60A5FA;
+  --accent-hover:    #93C5FD;
+  --code-bg:         #222222;
+  --code-text:       #F87171;
+  --selection-bg:    #2A4A7A;
+  --selection-text:  #E8E8E4;
+  --blockquote-bar:  #444440;
+  --table-header-bg: #1E1E1E;
+}

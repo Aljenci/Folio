@@ -1,0 +1,358 @@
+/* ── Layout and base ─────────────────────────── */
+
+@keyframes document-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.document-content {
+  max-width: var(--measure);     /* 68ch: the typographic sweet spot for line length */
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  color: var(--text);
+
+  /* Kerning and ligature features improve the quality of text rendering. */
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  /* Gentle entrance animation when a new document loads. */
+  animation: document-enter 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Text selection ──────────────────────────── */
+
+.document-content ::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+/* ── Headings ────────────────────────────────── */
+
+.document-content h1,
+.document-content h2,
+.document-content h3,
+.document-content h4,
+.document-content h5,
+.document-content h6 {
+  color: var(--text-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  break-after: avoid;
+  /* Offset when scrolled-to via anchor links or TOC navigation,
+     so the heading doesn't land flush against the top edge. */
+  scroll-margin-top: 1.5rem;
+}
+
+/* The first element in the document should not have top margin */
+.document-content > :first-child {
+  margin-top: 0;
+}
+
+.document-content h1 { font-size: 2.4rem; }
+.document-content h2 { font-size: 1.8rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+.document-content h3 { font-size: 1.4rem; }
+.document-content h4 { font-size: 1.2rem; }
+.document-content h5 { font-size: 1.05rem; }
+.document-content h6 { font-size: 1rem; color: var(--text-muted); }
+
+/* Heading anchor links (from rehype-autolink-headings) */
+.document-content h1 a,
+.document-content h2 a,
+.document-content h3 a,
+.document-content h4 a,
+.document-content h5 a,
+.document-content h6 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Show ¶ pilcrow icon on hover via ::after pseudo-element */
+.document-content :is(h1, h2, h3, h4, h5, h6) > a::after {
+  content: " ¶";
+  opacity: 0;
+  font-size: 0.7em;
+  font-weight: 400;
+  color: var(--text-muted);
+  transition: opacity 0.15s ease;
+  user-select: none;
+}
+
+.document-content :is(h1, h2, h3, h4, h5, h6):hover > a::after {
+  opacity: 1;
+}
+
+/* ── Paragraphs ──────────────────────────────── */
+
+.document-content p {
+  margin-bottom: 1.25rem;
+}
+
+/* ── Links ───────────────────────────────────── */
+
+.document-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--transition-theme);
+}
+
+.document-content a:hover {
+  color: var(--accent-hover);
+}
+
+/* ── Lists ───────────────────────────────────── */
+
+.document-content ul,
+.document-content ol {
+  padding-left: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.document-content ul  { list-style: disc; }
+.document-content ol  { list-style: decimal; }
+
+.document-content li {
+  margin-bottom: 0.4rem;
+  line-height: var(--line-height);
+}
+
+/* Nested lists need less bottom margin */
+.document-content li > ul,
+.document-content li > ol {
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+}
+
+/* Task list checkboxes — read-only, never interactive */
+.document-content input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  cursor: default;
+  flex-shrink: 0;
+  background-color: var(--bg);
+  transition: background-color 0.1s ease, border-color 0.1s ease;
+}
+
+.document-content input[type="checkbox"]:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.document-content input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 4px;
+  height: 8px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── Blockquotes ─────────────────────────────── */
+
+.document-content blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem;
+  border-left: 4px solid var(--blockquote-bar);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.document-content blockquote p { margin-bottom: 0; }
+.document-content blockquote p + p { margin-top: 0.75rem; }
+
+/* ── Inline code ─────────────────────────────── */
+
+.document-content :not(pre) > code {
+  font-family: var(--font-code);
+  font-size: 0.875em;
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── Code blocks ─────────────────────────────── */
+
+.document-content pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.document-content pre code {
+  font-family: var(--font-code);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  white-space: pre;
+}
+
+/* Shiki sets background-color inline on <pre>. Override with our theme
+   variable so dark/sepia backgrounds are consistent with the rest of the UI.
+   We target ALL <pre> elements since Shiki doesn't always preserve its class
+   through rehype-sanitize. */
+.document-content pre {
+  background-color: var(--code-bg) !important;
+}
+
+/* Shiki dual-theme token colours:
+   - Light / sepia: Shiki sets `color:#xxx` INLINE on each <span>.
+     No CSS override needed — the inline style is already correct.
+   - Dark: Shiki sets `--shiki-dark:#xxx` as a CSS custom property on the
+     same <span>. We must override the inline `color` to activate it.
+   We use `pre span` rather than `.shiki span` so the selector works
+   even if rehype-sanitize strips the `shiki` class from <pre>. */
+[data-theme="dark"] .document-content pre span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* ── Strikethrough ───────────────────────────── */
+
+.document-content del {
+  text-decoration: line-through;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ── Tables ──────────────────────────────────── */
+
+.document-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.document-content thead {
+  background-color: var(--table-header-bg);
+}
+
+.document-content th,
+.document-content td {
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.document-content th {
+  font-weight: 600;
+}
+
+.document-content tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--surface) 50%, var(--bg));
+}
+
+/* ── Horizontal rules ────────────────────────── */
+
+.document-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ── Images ──────────────────────────────────── */
+
+.document-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+.document-content figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ── Footnotes ───────────────────────────────── */
+
+.document-content .footnotes {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.document-content .footnote-backref {
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
+/* ── Mermaid diagrams ────────────────────────── */
+
+.document-content .mermaid-diagram {
+  margin: 1.5rem 0;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.document-content .mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.document-content .mermaid-error {
+  color: #cc0000;
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-code);
+  font-size: 0.875rem;
+  margin: 1.5rem 0;
+}
+
+/* ── KaTeX math ──────────────────────────────── */
+
+.document-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.5rem 0;
+}

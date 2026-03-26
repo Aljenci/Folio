@@ -1,0 +1,26 @@
+/*
+  Sepia theme — warm parchment.
+
+  Named after the brown pigment used in historical inks, sepia creates
+  a warm, paper-like reading environment. It reduces blue light exposure
+  compared to the light theme, making it gentler for evening reading.
+
+  The combination of warm backgrounds, brown accents, and slightly brownish
+  text creates a cohesive aesthetic reminiscent of aged paper documents.
+*/
+[data-theme="sepia"] {
+  --bg:              #F8F1E4;
+  --surface:         #FDF6E8;
+  --text:            #2C1F0E;
+  --text-muted:      #7A6347;
+  --text-heading:    #1E1508;
+  --border:          #E0D4BC;
+  --accent:          #8B4513;
+  --accent-hover:    #6B340F;
+  --code-bg:         #EDE5D0;
+  --code-text:       #8B2500;
+  --selection-bg:    #D4B896;
+  --selection-text:  #1E1508;
+  --blockquote-bar:  #C8B898;
+  --table-header-bg: #EAE0CC;
+}

@@ -1,0 +1,24 @@
+/*
+  Light theme — warm paper white.
+
+  We use #FAFAF8 rather than pure white for the background.
+  Pure white on a backlit screen creates too much brightness contrast.
+  #FAFAF8 is warm enough to reduce eye strain without looking yellow.
+  Think of it as the colour of quality writing paper rather than bright office paper.
+*/
+[data-theme="light"] {
+  --bg:              #FAFAF8;
+  --surface:         #FFFFFF;
+  --text:            #1A1A18;
+  --text-muted:      #6B6B65;
+  --text-heading:    #0F0F0D;
+  --border:          #E5E5E0;
+  --accent:          #2563EB;
+  --accent-hover:    #1D4ED8;
+  --code-bg:         #F3F3EF;
+  --code-text:       #C7254E;
+  --selection-bg:    #BFD7FF;
+  --selection-text:  #0F0F0D;
+  --blockquote-bar:  #D0D0C8;
+  --table-header-bg: #F0F0EC;
+}

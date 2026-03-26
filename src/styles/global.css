@@ -1,0 +1,602 @@
+/* ============================================================
+   CSS Custom Properties — design tokens.
+   Theme colours are defined in src/styles/themes/*.css
+   and activated via [data-theme] on <html>.
+   ============================================================ */
+:root {
+  /* Typography */
+  --font-body:       'Lora Variable', Georgia, 'Times New Roman', serif;
+  --font-code:       'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  --font-sans:       'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-base:  18px;
+  --line-height:     1.75;
+  --measure:         68ch;  /* optimal line length for readability */
+
+  /* Transitions */
+  --transition-theme: 200ms ease;
+
+  /* Fallback colours (overridden by [data-theme] selectors in themes/*.css) */
+  --bg:              #FAFAF8;
+  --surface:         #FFFFFF;
+  --text:            #1A1A18;
+  --text-muted:      #6B6B65;
+  --text-heading:    #0F0F0D;
+  --border:          #E5E5E0;
+  --accent:          #2563EB;
+  --accent-hover:    #1D4ED8;
+  --code-bg:         #F3F3EF;
+  --code-text:       #C7254E;
+  --selection-bg:    #BFD7FF;
+  --selection-text:  #0F0F0D;
+  --blockquote-bar:  #D0D0C8;
+  --table-header-bg: #F0F0EC;
+}
+
+/* OS dark mode fallback — applies before JavaScript sets data-theme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg:              #141414;
+    --surface:         #1C1C1C;
+    --text:            #E8E8E4;
+    --text-muted:      #888880;
+    --text-heading:    #F0F0EC;
+    --border:          #2E2E2E;
+    --accent:          #60A5FA;
+    --accent-hover:    #93C5FD;
+    --code-bg:         #222222;
+    --code-text:       #F87171;
+    --selection-bg:    #2A4A7A;
+    --selection-text:  #E8E8E4;
+    --blockquote-bar:  #444440;
+    --table-header-bg: #1E1E1E;
+  }
+}
+
+/*
+  Smooth theme crossfade: when data-theme changes, all custom property
+  values update simultaneously. CSS transitions create a 200ms crossfade.
+  We only transition colour properties to avoid slowing other animations.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  /* Prevent double scrollbars — the .document-area div does the scrolling */
+  overflow: hidden;
+  /* Smooth reveal after the window becomes visible */
+  animation: folio-fade-in 120ms ease forwards;
+}
+
+@keyframes folio-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#root {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================================================
+   App shell layouts
+   ============================================================ */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app--empty,
+.app--error,
+.app--loading {
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone {
+  text-align: center;
+  padding: 2rem;
+}
+
+.drop-zone h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.error-message {
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+button {
+  cursor: pointer;
+  padding: 0.5em 1.25em;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--code-bg);
+  color: var(--text);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  transition: opacity 0.15s;
+}
+
+button:hover {
+  opacity: 0.75;
+}
+
+/* ============================================================
+   Scrollbar styling (WebView2 / Chromium)
+   ::-webkit-scrollbar rules override the OS default white scrollbar
+   so it respects the active theme. scrollbar-color is the standards
+   track (Firefox / future Chromium), kept in sync.
+   ============================================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ============================================================
+   Keyboard focus rings
+   Use :focus-visible to only show the ring for keyboard nav,
+   not for mouse clicks.
+   ============================================================ */
+
+/* Remove the browser default outline everywhere */
+*:focus {
+  outline: none;
+}
+
+/* Custom focus ring for keyboard navigation only */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   Screen-reader-only utility class
+   Visually hidden but accessible to assistive technologies.
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   Reduced motion — respect user preference
+   Disables all animations and transitions for users who have
+   indicated they prefer minimal motion (vestibular disorders).
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   High contrast / forced-colors mode
+   When the OS overrides colours (Windows High Contrast, macOS
+   Increase Contrast), these rules ensure Folio remains usable.
+   ============================================================ */
+@media (forced-colors: active) {
+  .document-content {
+    color: CanvasText;
+    background-color: Canvas;
+  }
+
+  .document-content a {
+    color: LinkText;
+  }
+
+  /* Code blocks need a border to distinguish them from body text
+     since background colours are overridden by the OS. */
+  .document-content code,
+  .document-content pre {
+    border: 1px solid CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+
+  .toc-link--active {
+    background-color: Highlight;
+    color: HighlightText;
+    /* Prevent the OS from further overriding our explicit colours here */
+    forced-color-adjust: none;
+  }
+
+  /* Ensure focus rings are always visible at 3 px in high-contrast mode */
+  *:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+/* ============================================================
+   Focus Mode — sticky gradient vignette on the document edges.
+   Pseudo-elements live inside .document-area (the scroll container)
+   so they stick to the visible viewport as the user scrolls.
+   No fixed overlay, no layout shift, no z-index conflicts.
+   ============================================================ */
+.document-area::before,
+.document-area::after {
+  content: "";
+  display: block;
+  position: sticky;
+  width: 100%;
+  height: 28vh;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.document-area::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  margin-bottom: -28vh; /* overlap content — do not push it down */
+}
+
+.document-area::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  margin-top: -28vh;
+}
+
+.document-area--focus-mode::before,
+.document-area--focus-mode::after {
+  opacity: 1;
+}
+
+/* ============================================================
+   Hover toolbar
+   ============================================================ */
+.hover-trigger {
+  position: fixed;
+  top: var(--toolbar-h);
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 90;
+  pointer-events: all;
+}
+
+.hover-toolbar {
+  position: fixed;
+  top: calc(var(--toolbar-h) + 8px);
+  right: 16px;
+  z-index: 91;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.hover-toolbar--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.toolbar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  transition: background-color 120ms ease, color 120ms ease;
+  line-height: 1;
+}
+
+.toolbar-btn:hover {
+  background-color: var(--code-bg);
+  color: var(--text);
+  opacity: 1;
+}
+
+/* ============================================================
+   Error banner (toast notification)
+   ============================================================ */
+.error-banner {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 480px;
+  width: calc(100% - 48px);
+
+  background-color: var(--surface);
+  border: 1px solid #FCA5A5;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+
+  animation: banner-appear 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes banner-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.error-banner__content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.error-banner__icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.error-banner__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-banner__title {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 2px;
+}
+
+.error-banner__body {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.error-banner__path {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.error-banner__detail {
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 480px;
+}
+
+.error-banner__dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px 4px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color 100ms ease, background-color 100ms ease;
+}
+
+.error-banner__dismiss:hover {
+  color: var(--text);
+  background-color: var(--code-bg);
+  opacity: 1;
+}
+
+/* ============================================================
+   Empty state
+   ============================================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+
+.empty-state__icon {
+  font-size: 2.5rem;
+}
+
+.empty-state__message {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+
+/* ============================================================
+   PRINT STYLESHEET
+   Applied only when the user prints or uses Save as PDF.
+   Forces clean black-on-white output regardless of active theme.
+   ============================================================ */
+@media print {
+  /* Hide all UI chrome — only the document content should print. */
+  .toc-sidebar,
+  .progress-bar,
+  .search-bar,
+  .heading-palette,
+  .welcome,
+  .hover-toolbar,
+  .error-banner,
+  .app--error,
+  .app--loading {
+    display: none !important;
+  }
+
+  /* Reset the flex shell and overflow containers for flow layout. */
+  .app-shell {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .document-area {
+    overflow: visible;
+    height: auto;
+    margin-left: 0 !important;
+  }
+
+  /* Physical page dimensions and margins. */
+  @page {
+    size: A4;
+    margin: 2cm 2.5cm;
+  }
+
+  .document-content {
+    /* Remove screen reading-column constraint and let content fill the page. */
+    max-width: none;
+    padding: 0;
+    margin: 0;
+
+    /* Standard print typography. */
+    font-size: 11pt;
+    line-height: 1.5;
+
+    /* Always black-on-white for print regardless of active app theme. */
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  /* Heading sizes in print units. */
+  .document-content h1 { font-size: 20pt; }
+  .document-content h2 { font-size: 16pt; border-bottom: 1px solid #ccc; }
+  .document-content h3 { font-size: 13pt; }
+  .document-content h4 { font-size: 11pt; }
+
+  /* Prevent headings from being stranded alone at the bottom of a page. */
+  .document-content h1,
+  .document-content h2,
+  .document-content h3,
+  .document-content h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Code blocks: prevent splitting across pages and add a visible border. */
+  .document-content pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ccc;
+    background: #f9f9f9 !important;
+    color: #000 !important;
+    padding: 0.5cm;
+    font-size: 9pt;
+  }
+
+  /*
+    Print link destinations after the link text so URLs are readable on paper.
+    attr() accesses the element's href attribute value.
+  */
+  .document-content a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+    font-style: normal;
+  }
+
+  /* Suppress URL display for anchor (internal) links — meaningless on paper. */
+  .document-content a[href^="#"]::after {
+    content: none;
+  }
+
+  /* Repeat the table header row on every page. */
+  .document-content thead {
+    display: table-header-group;
+  }
+
+  /* Prevent images from splitting across pages. */
+  .document-content img {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    max-width: 100%;
+  }
+}

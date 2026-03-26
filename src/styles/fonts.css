@@ -1,0 +1,19 @@
+/*
+  Font face declarations for Folio's font selector.
+
+  Lora and Source Serif 4 are loaded from Google Fonts via index.html.
+  Inter is a system font stack fallback.
+  OpenDyslexic is loaded from local assets — no external request.
+
+  Place OpenDyslexic-Regular.woff2 in src/assets/fonts/.
+  Download from: https://github.com/antijingoist/opendyslexic/releases
+*/
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('../assets/fonts/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  /* swap: shows fallback font immediately, swaps when OpenDyslexic loads */
+  font-display: swap;
+}

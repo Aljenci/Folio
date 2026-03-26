@@ -1,0 +1,83 @@
+# ============================================================
+# Folio — .gitignore
+# ============================================================
+
+# ── Node / pnpm ─────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Lock files — omitted so the repo works across different package managers
+# (npm, yarn, pnpm). Run `pnpm install` / `npm install` on each machine.
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── Leftover Vite / Tauri scaffold files (not used by the app) ───────────────
+Folio
+src/App.css
+public/tauri.svg
+public/vite.svg
+src/assets/react.svg
+
+# ── Rust / Cargo ─────────────────────────────────────────────
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# ── Tauri build artifacts ────────────────────────────────────
+src-tauri/WixTools/
+*.msi
+*.dmg
+*.deb
+*.AppImage
+
+# ── OS ───────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+
+# ── Editors ──────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+
+# ── Test / Coverage ──────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Environment ──────────────────────────────────────────────
+.env
+.env.*
+!.env.example

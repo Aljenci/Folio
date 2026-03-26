@@ -1,0 +1,85 @@
+/* ============================================================
+   Floating search bar
+   ============================================================ */
+
+.search-bar {
+  position: fixed;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  animation: search-enter 150ms ease-out;
+}
+
+@keyframes search-enter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.search-bar__input {
+  width: 220px;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text);
+  padding: 0;
+}
+
+.search-bar__input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-bar__count {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 5rem;
+  text-align: right;
+}
+
+.search-bar__nav,
+.search-bar__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: color 100ms ease, background-color 100ms ease;
+}
+
+.search-bar__nav:hover:not(:disabled),
+.search-bar__close:hover {
+  color: var(--text);
+  background-color: var(--code-bg);
+}
+
+.search-bar__nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Search highlight marks ──────────────────── */
+
+.document-content mark.search-highlight {
+  background-color: #FFDE73;
+  color: #1A1A18;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.document-content mark.search-match--active {
+  background-color: #FF9900;
+  color: #FFFFFF;
+}
