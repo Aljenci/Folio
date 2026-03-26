@@ -508,12 +508,20 @@ button:hover {
   .hover-toolbar,
   .error-banner,
   .app--error,
-  .app--loading {
+  .app--loading,
+  .app-toolbar,
+  .app-menu__dropdown {
     display: none !important;
   }
 
   /* Reset the flex shell and overflow containers for flow layout. */
   .app-shell {
+    display: block;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-body {
     display: block;
     height: auto;
     overflow: visible;
@@ -523,6 +531,13 @@ button:hover {
     overflow: visible;
     height: auto;
     margin-left: 0 !important;
+  }
+
+  /* Ensure the root element allows full content to be printed */
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
   }
 
   /* Physical page dimensions and margins. */
