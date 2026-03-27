@@ -17,13 +17,11 @@
 | **Windows** | `.msi` installer |
 | **Linux** | `.AppImage` / `.deb` |
 
-→ **[Download v1.0.0 from GitHub Releases](https://github.com/yourname/folio/releases/tag/v1.0.0)**
+→ **[Download the latest release from GitHub](https://github.com/Aljenci/Folio/releases/latest)**
 
-> **Note (v1.0.0 — unsigned release):**
+> **Note (unsigned release):**
 > - **macOS:** Right-click the app → *Open* → confirm to bypass Gatekeeper on first launch.
 > - **Windows:** Click *More info → Run anyway* in the SmartScreen prompt.
->
-> Code signing is planned for v1.1.
 
 ---
 
@@ -84,7 +82,7 @@ The project was built using [Claude](https://claude.ai) for architecture decisio
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourname/folio.git
+git clone https://github.com/Aljenci/Folio.git
 cd folio
 
 # 2. Install JavaScript dependencies
